@@ -1,103 +1,92 @@
 import React, { useState } from 'react';
-import { Box, Avatar, Menu, MenuItem, ListItemIcon, Divider, IconButton, Tooltip } from '@mui/material';
-import { Settings, Logout } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Box, Avatar, Menu, MenuItem, ListItemIcon, Divider, IconButton, Tooltip, Typography } from '@mui/material';
+import { PersonOutline, Logout } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const AccountMenu = () => {
-    const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+  const { currentRole, currentUser } = useSelector(state => state.user);
 
-    const open = Boolean(anchorEl);
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
 
-    const { currentRole, currentUser } = useSelector(state => state.user);
+  const handleProfile = () => {
+    handleClose();
+    navigate(`/${currentRole}/profile`);
+  };
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    return (
-        <>
-            <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                <Tooltip title="Account settings">
-                    <IconButton
-                        onClick={handleClick}
-                        size="small"
-                        sx={{ ml: 2 }}
-                        aria-controls={open ? 'account-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                    >
-                        <Avatar sx={{ width: 32, height: 32 }}>
-                            {String(currentUser.name).charAt(0)}
-                        </Avatar>
-                    </IconButton>
-                </Tooltip>
-            </Box>
-            <Menu
-                anchorEl={anchorEl}
-                id="account-menu"
-                open={open}
-                onClose={handleClose}
-                onClick={handleClose}
-                PaperProps={{
-                    elevation: 0,
-                    sx: styles.styledPaper,
-                }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            >
-                <MenuItem>
-                    <Avatar />
-                    <Link to={`/${currentRole}/profile`}>
-                        Profile
-                    </Link>
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <Settings fontSize="small" />
-                    </ListItemIcon>
-                    Settings
-                </MenuItem>
-                <MenuItem>
-                    <ListItemIcon>
-                        <Logout fontSize="small" />
-                    </ListItemIcon>
-                    <Link to="/logout">
-                        Logout
-                    </Link>
-                </MenuItem>
-            </Menu>
-        </>
-    );
-}
+  const handleLogout = () => {
+    handleClose();
+    navigate('/logout');
+  };
 
-export default AccountMenu
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Tooltip title="Account">
+        <IconButton
+          onClick={handleClick}
+          size="small"
+          sx={{ ml: 1 }}
+          aria-controls={open ? 'account-menu' : undefined}
+          aria-haspopup="true"
+        >
+          <Avatar
+            sx={{
+              width: 36,
+              height: 36,
+              bgcolor: 'rgba(255,255,255,0.25)',
+              fontWeight: 600,
+            }}
+          >
+            {currentUser?.name ? String(currentUser.name).charAt(0).toUpperCase() : '?'}
+          </Avatar>
+        </IconButton>
+      </Tooltip>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            mt: 1.5,
+            borderRadius: 2,
+            boxShadow: '0 8px 32px rgba(15,23,42,0.12)',
+            minWidth: 180,
+          },
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        <Box sx={{ px: 2, py: 1.5 }}>
+          <Typography variant="body2" fontWeight={600} color="text.primary">
+            {currentUser?.name}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {currentUser?.schoolName || currentUser?.school?.schoolName || currentRole}
+          </Typography>
+        </Box>
+        <Divider />
+        <MenuItem onClick={handleProfile}>
+          <ListItemIcon>
+            <PersonOutline fontSize="small" />
+          </ListItemIcon>
+          Profile
+        </MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
+      </Menu>
+    </Box>
+  );
+};
 
-const styles = {
-    styledPaper: {
-        overflow: 'visible',
-        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-        mt: 1.5,
-        '& .MuiAvatar-root': {
-            width: 32,
-            height: 32,
-            ml: -0.5,
-            mr: 1,
-        },
-        '&:before': {
-            content: '""',
-            display: 'block',
-            position: 'absolute',
-            top: 0,
-            right: 14,
-            width: 10,
-            height: 10,
-            bgcolor: 'background.paper',
-            transform: 'translateY(-50%) rotate(45deg)',
-            zIndex: 0,
-        },
-    }
-}
+export default AccountMenu;

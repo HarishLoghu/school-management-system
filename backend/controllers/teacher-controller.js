@@ -84,6 +84,20 @@ const getTeacherDetail = async (req, res) => {
     }
 }
 
+const updateTeacher = async (req, res) => {
+    try {
+        if (req.body.password) {
+            const salt = await bcrypt.genSalt(10);
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+        }
+        let result = await Teacher.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+        if (result) result.password = undefined;
+        res.send(result);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+};
+
 const updateTeacherSubject = async (req, res) => {
     const { teacherId, teachSubject } = req.body;
     try {
@@ -197,6 +211,7 @@ module.exports = {
     teacherLogIn,
     getTeachers,
     getTeacherDetail,
+    updateTeacher,
     updateTeacherSubject,
     deleteTeacher,
     deleteTeachers,

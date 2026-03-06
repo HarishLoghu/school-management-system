@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  Chip,
+} from '@mui/material';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { getSubjectDetails } from '../../../redux/sclassRelated/sclassHandle';
 import Popup from '../../../components/Popup';
 import { registerUser } from '../../../redux/userRelated/userHandle';
 import { underControl } from '../../../redux/userRelated/userSlice';
-import { CircularProgress } from '@mui/material';
 
 const AddTeacher = () => {
   const params = useParams()
@@ -15,7 +24,7 @@ const AddTeacher = () => {
   const subjectID = params.id
 
   const { status, response, error } = useSelector(state => state.user);
-  const { subjectDetails } = useSelector((state) => state.sclass);
+  const { subjectDetails, subloading } = useSelector((state) => state.sclass);
 
   useEffect(() => {
     dispatch(getSubjectDetails(subjectID, "Subject"));
@@ -53,53 +62,108 @@ const AddTeacher = () => {
       setLoader(false)
     }
     else if (status === 'error') {
-      setMessage("Network Error")
+      setMessage("Network Error - Please ensure the backend is running on http://localhost:5000")
       setShowPopup(true)
       setLoader(false)
     }
   }, [status, navigate, error, response, dispatch]);
 
   return (
-    <div>
-      <div className="register">
-        <form className="registerForm" onSubmit={submitHandler}>
-          <span className="registerTitle">Add Teacher</span>
-          <br />
-          <label>
-            Subject : {subjectDetails && subjectDetails.subName}
-          </label>
-          <label>
-            Class : {subjectDetails && subjectDetails.sclassName && subjectDetails.sclassName.sclassName}
-          </label>
-          <label>Name</label>
-          <input className="registerInput" type="text" placeholder="Enter teacher's name..."
+    <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+      <Paper
+        elevation={0}
+        sx={{
+          p: 4,
+          maxWidth: 480,
+          width: '100%',
+          borderRadius: 3,
+          boxShadow: '0 8px 40px rgba(0,0,0,0.08)',
+          border: '1px solid rgba(0,0,0,0.06)',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
+          <PersonAddIcon sx={{ color: 'primary.main', fontSize: 32 }} />
+          <Typography variant="h5" fontWeight={700} color="text.primary">
+            Add Teacher
+          </Typography>
+        </Box>
+
+        {subloading && (
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="body2" color="text.secondary">Loading subject details...</Typography>
+          </Box>
+        )}
+        {subjectDetails?.subName && (
+          <Box sx={{ display: 'flex', gap: 1, mb: 3, flexWrap: 'wrap' }}>
+            <Chip
+              label={`Subject: ${subjectDetails.subName}`}
+              color="primary"
+              variant="outlined"
+              size="small"
+            />
+            <Chip
+              label={`Class: ${subjectDetails.sclassName?.sclassName || '—'}`}
+              color="secondary"
+              variant="outlined"
+              size="small"
+            />
+          </Box>
+        )}
+
+        <form onSubmit={submitHandler}>
+          <TextField
+            fullWidth
+            label="Name"
             value={name}
-            onChange={(event) => setName(event.target.value)}
-            autoComplete="name" required />
-
-          <label>Email</label>
-          <input className="registerInput" type="email" placeholder="Enter teacher's email..."
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter teacher's name"
+            required
+            sx={{ mb: 2 }}
+            autoComplete="name"
+          />
+          <TextField
+            fullWidth
+            type="email"
+            label="Email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            autoComplete="email" required />
-
-          <label>Password</label>
-          <input className="registerInput" type="password" placeholder="Enter teacher's password..."
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter teacher's email"
+            required
+            sx={{ mb: 2 }}
+            autoComplete="email"
+          />
+          <TextField
+            fullWidth
+            type="password"
+            label="Password"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            autoComplete="new-password" required />
-
-          <button className="registerButton" type="submit" disabled={loader}>
-            {loader ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              'Register'
-            )}
-          </button>
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter teacher's password"
+            required
+            sx={{ mb: 3 }}
+            autoComplete="new-password"
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            size="large"
+            type="submit"
+            disabled={loader}
+            startIcon={loader ? <CircularProgress size={20} color="inherit" /> : <PersonAddIcon />}
+            sx={{
+              py: 1.5,
+              borderRadius: 2,
+              textTransform: 'none',
+              fontSize: '1rem',
+              fontWeight: 600,
+            }}
+          >
+            {loader ? 'Registering...' : 'Register Teacher'}
+          </Button>
         </form>
-      </div>
+      </Paper>
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
-    </div>
+    </Box>
   )
 }
 

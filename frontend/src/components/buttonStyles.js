@@ -41,40 +41,51 @@ export const DarkRedButton = styled(Button)`
 
 export const BlueButton = styled(Button)`
   && {
-    background-color: #080a43;
+    background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
     color: #fff;
+    border-radius: 10px;
+    text-transform: none;
+    font-weight: 600;
     &:hover {
-      background-color: #0a1e82;
+      background: linear-gradient(135deg, #0F766E 0%, #115E59 100%);
     }
   }
 `;
 
 export const PurpleButton = styled(Button)`
   && {
-    background-color: #270843;
+    background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
     color: #fff;
+    border-radius: 10px;
+    text-transform: none;
+    font-weight: 600;
     &:hover {
-      background-color: #3f1068;
+      background: linear-gradient(135deg, #0F766E 0%, #115E59 100%);
     }
   }
 `;
 
 export const LightPurpleButton = styled(Button)`
   && {
-    background-color: #7f56da;
+    background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
     color: #fff;
+    box-shadow: 0 4px 14px rgba(13, 148, 136, 0.25);
     &:hover {
-      background-color: #7a1ccb;
+      background: linear-gradient(135deg, #0F766E 0%, #115E59 100%);
+      box-shadow: 0 6px 20px rgba(13, 148, 136, 0.35);
     }
   }
 `;
 
 export const GreenButton = styled(Button)`
   && {
-    background-color: #133104;
+    background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
     color: #fff;
+    border-radius: 10px;
+    text-transform: none;
+    font-weight: 600;
     &:hover {
-      background-color: #266810;
+      background: linear-gradient(135deg, #34D399 0%, #22C55E 100%);
     }
   }
 `;
@@ -93,12 +104,13 @@ export const BrownButton = styled(Button)`
 
 export const IndigoButton = styled(Button)`
   && {
-    background-color: #2f2b80;
+    background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
     color: white;
+    border-radius: 10px;
+    text-transform: none;
+    font-weight: 600;
     &:hover {
-      background-color: #534ea6;
-      border-color: #473d90;
-      box-shadow: none;
+      background: linear-gradient(135deg, #0F766E 0%, #115E59 100%);
     }
   }
 `;

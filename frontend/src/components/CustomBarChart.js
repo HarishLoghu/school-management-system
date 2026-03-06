@@ -142,7 +142,7 @@ const CustomTooltipContent = ({ active, payload, dataKey }) => {
                     </>
                 ) : (
                     <>
-                        <TooltipMain>{subName.subName}</TooltipMain>
+                        <TooltipMain>{subName && subName.subName ? subName.subName : "Unknown"}</TooltipMain>
                         <TooltipText>Marks: {marksObtained}</TooltipText>
                     </>
                 )}
@@ -154,8 +154,8 @@ const CustomTooltipContent = ({ active, payload, dataKey }) => {
 };
 
 const CustomBarChart = ({ chartData, dataKey }) => {
-    const subjects = chartData.map((data) => data.subject);
-    const distinctColors = generateDistinctColors(subjects.length);
+    const subjects = chartData ? chartData.map((data) => data.subject) : [];
+    const distinctColors = generateDistinctColors(subjects.length || 0);
 
     return (
         <BarChart width={500} height={500} data={chartData}>

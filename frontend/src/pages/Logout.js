@@ -1,73 +1,53 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Box, Paper, Typography, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { authLogout } from '../redux/userRelated/userSlice';
-import styled from 'styled-components';
 
 const Logout = () => {
-    const currentUser = useSelector(state => state.user.currentUser);
+  const currentUser = useSelector(state => state.user.currentUser);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(authLogout());
+    navigate('/');
+  };
 
-    const handleLogout = () => {
-        dispatch(authLogout());
-        navigate('/');
-    };
+  const handleCancel = () => {
+    navigate(-1);
+  };
 
-    const handleCancel = () => {
-        navigate(-1);
-    };
-
-    return (
-        <LogoutContainer>
-            <h1>{currentUser.name}</h1>
-            <LogoutMessage>Are you sure you want to log out?</LogoutMessage>
-            <LogoutButtonLogout onClick={handleLogout}>Log Out</LogoutButtonLogout>
-            <LogoutButtonCancel onClick={handleCancel}>Cancel</LogoutButtonCancel>
-        </LogoutContainer>
-    );
+  return (
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', p: 3 }}>
+      <Paper
+        elevation={0}
+        sx={{
+          p: 4,
+          maxWidth: 420,
+          width: '100%',
+          borderRadius: 3,
+          textAlign: 'center',
+          boxShadow: '0 8px 40px rgba(15,23,42,0.08)',
+        }}
+      >
+        <Typography variant="h6" fontWeight={600} gutterBottom>
+          {currentUser?.name}
+        </Typography>
+        <Typography color="text.secondary" sx={{ mb: 3 }}>
+          Are you sure you want to sign out?
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Button variant="contained" color="error" onClick={handleLogout} sx={{ borderRadius: 2 }}>
+            Sign out
+          </Button>
+          <Button variant="outlined" onClick={handleCancel} sx={{ borderRadius: 2 }}>
+            Cancel
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
+  );
 };
 
 export default Logout;
-
-const LogoutContainer = styled.div`
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-  background-color: #85769f66;
-  color: black;
-`;
-
-const LogoutMessage = styled.p`
-  margin-bottom: 20px;
-  font-size: 16px;
-  text-align: center;
-`;
-
-const LogoutButton = styled.button`
-  padding: 10px 20px;
-  margin-top: 10px;
-  border-radius: 5px;
-  font-size: 16px;
-  color: #fff;
-  cursor: pointer;
-
-  &:hover {
-    color: #fff;
-    background-color: #333;
-  }
-`;
-
-const LogoutButtonLogout = styled(LogoutButton)`
-  background-color: #ea0606;
-`;
-
-const LogoutButtonCancel = styled(LogoutButton)`
-  background-color: rgb(99, 60, 99);
-`;

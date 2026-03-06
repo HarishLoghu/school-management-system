@@ -43,7 +43,7 @@ const SubjectForm = () => {
     };
 
     const handleAddSubject = () => {
-        setSubjects([...subjects, { subName: "", subCode: "" }]);
+        setSubjects([...subjects, { subName: "", subCode: "", sessions: "" }]);
     };
 
     const handleRemoveSubject = (index) => () => {
@@ -80,7 +80,7 @@ const SubjectForm = () => {
             setLoader(false)
         }
         else if (status === 'error') {
-            setMessage("Network Error")
+            setMessage("Network Error - Ensure backend is running on http://localhost:5000")
             setShowPopup(true)
             setLoader(false)
         }
@@ -94,7 +94,7 @@ const SubjectForm = () => {
             <Grid container spacing={2}>
                 {subjects.map((subject, index) => (
                     <React.Fragment key={index}>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={4}>
                             <TextField
                                 fullWidth
                                 label="Subject Name"
@@ -105,7 +105,7 @@ const SubjectForm = () => {
                                 required
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={12} sm={4}>
                             <TextField
                                 fullWidth
                                 label="Subject Code"
@@ -116,7 +116,7 @@ const SubjectForm = () => {
                                 required
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={12} sm={3}>
                             <TextField
                                 fullWidth
                                 label="Sessions"
@@ -129,7 +129,7 @@ const SubjectForm = () => {
                                 required
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={1}>
                             <Box display="flex" alignItems="flex-end">
                                 {index === 0 ? (
                                     <Button

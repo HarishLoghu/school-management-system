@@ -43,7 +43,7 @@ const StudentComplain = () => {
         else if (error) {
             setLoader(false)
             setShowPopup(true)
-            setMessage("Network Error")
+            setMessage("Network Error - Ensure backend is running on http://localhost:5000")
         }
     }, [status, error])
 

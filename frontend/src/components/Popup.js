@@ -20,26 +20,33 @@ const Popup = ({ message, setShowPopup, showPopup }) => {
         dispatch(underStudentControl())
     };
 
+    const isSuccess = message === "Done Successfully" || message === "Added Successfully";
+
     return (
         <>
-            <Snackbar open={showPopup} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
-                {
-                    (message === "Done Successfully") ?
-                        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                            {message}
-                        </Alert>
-                        :
-                        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-                            {message}
-                        </Alert>
-                }
+            <Snackbar
+                open={showPopup}
+                autoHideDuration={4000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical, horizontal }}
+                key={vertical + horizontal}
+                sx={{ '& .MuiPaper-root': { borderRadius: 2, boxShadow: '0 8px 32px rgba(0,0,0,0.12)' } }}
+            >
+                <MuiAlert
+                    onClose={handleClose}
+                    severity={isSuccess ? 'success' : 'error'}
+                    variant="filled"
+                    sx={{
+                        width: '100%',
+                        borderRadius: 2,
+                        fontWeight: 500,
+                    }}
+                >
+                    {message}
+                </MuiAlert>
             </Snackbar>
         </>
     );
 };
 
 export default Popup;
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});

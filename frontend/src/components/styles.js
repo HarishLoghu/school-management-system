@@ -11,8 +11,9 @@ const drawerWidth = 240
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
+        background: 'linear-gradient(135deg, #0D9488 0%, #0F766E 100%)',
         color: theme.palette.common.white,
+        fontWeight: 600,
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 14,
